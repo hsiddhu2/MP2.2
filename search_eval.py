@@ -21,8 +21,27 @@ class InL2Ranker(metapy.index.RankingFunction):
         You need to override this function to return a score for a single term.
         For fields available in the score_data sd object,
         @see https://meta-toolkit.org/doxygen/structmeta_1_1index_1_1score__data.html
+
+        avg_dl = {float} 87.1785736084
+        corpus_term_count = {long} 373
+        d_id = {long} 1
+        doc_count = {long} 251
+        doc_size = {long} 112
+        doc_term_count = {long} 1
+        doc_unique_terms = {long} 63
+        num_docs = {long} 1400
+        query_length = {float} 10.0
+        query_term_weight = {float} 1.0
+        t_id = {long} 1618
+        total_terms = {long} 122050
         """
-        return (self.param + sd.doc_term_count) / (self.param * sd.doc_unique_terms + sd.doc_size)
+
+        tfn = sd.doc_term_count * math.log2(1.0 + sd.avg_dl / sd.doc_size)
+        middle_term = tfn / (tfn + self.param)
+        sub_term = (sd.num_docs + 1) / (sd.corpus_term_count + 0.5)
+        return sd.query_term_weight * middle_term * math.log2(sub_term)
+
+        # return (self.param + sd.doc_term_count) / (self.param * sd.doc_unique_terms + sd.doc_size)
 
 
 def load_ranker(cfg_file):
@@ -31,7 +50,7 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index. You can ignore this for MP2.
     """
-    return InL2Ranker(some_param=2.0)
+    return InL2Ranker(some_param=1.0)
     # return metapy.index.JelinekMercer()
 
 
