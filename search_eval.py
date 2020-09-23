@@ -51,6 +51,7 @@ def load_ranker(cfg_file):
     configuration file used to load the index. You can ignore this for MP2.
     """
     return InL2Ranker(some_param=1.0)
+
     # return metapy.index.JelinekMercer()
 
 
