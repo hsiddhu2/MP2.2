@@ -36,10 +36,10 @@ class InL2Ranker(metapy.index.RankingFunction):
         total_terms = {long} 122050
         """
 
-        tfn = sd.doc_term_count * math.log2(1.0 + sd.avg_dl / sd.doc_size)
+        tfn = sd.doc_term_count * math.log(1.0 + sd.avg_dl / sd.doc_size,2)
         middle_term = tfn / (tfn + self.param)
         sub_term = (sd.num_docs + 1) / (sd.corpus_term_count + 0.5)
-        return sd.query_term_weight * middle_term * math.log2(sub_term)
+        return sd.query_term_weight * middle_term * math.log(sub_term,2)
 
         # return (self.param + sd.doc_term_count) / (self.param * sd.doc_unique_terms + sd.doc_size)
 
