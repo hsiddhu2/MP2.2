@@ -5,10 +5,12 @@ import time
 import metapy
 import pytoml
 
+
 class InL2Ranker(metapy.index.RankingFunction):
     """
     Create a new ranking function in Python that can be used in MeTA.
     """
+
     def __init__(self, some_param=1.0):
         self.param = some_param
         # You *must* call the base class constructor here!
@@ -29,7 +31,9 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index. You can ignore this for MP2.
     """
-    return metapy.index.JelinekMercer()
+    return InL2Ranker(some_param=2.0)
+    # return metapy.index.JelinekMercer()
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
